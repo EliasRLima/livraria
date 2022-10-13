@@ -9,16 +9,15 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "tb_emprestimo")
 public class Emprestimo {
 
-    @EmbeddedId
-    private EmprestimoPK id = new EmprestimoPK();
+    private Long idEmprestimo;
+    private Long idUser;
+    private List<Livro> livros;
     private LocalDateTime dataInicioEmprestimo;
     private LocalDateTime dataPrevistaDevolucaoEmprestimo;
     private LocalDateTime dataDevolucaoEmprestimo;
