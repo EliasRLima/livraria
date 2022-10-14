@@ -1,4 +1,4 @@
-package com.ifma.livraria.resource;
+package com.ifma.livraria.utils.resource;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
