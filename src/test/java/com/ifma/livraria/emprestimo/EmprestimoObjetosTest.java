@@ -37,4 +37,45 @@ public class EmprestimoObjetosTest {
         return emprestimo;
     }
 
+    public Emprestimo getEmprestimoDataPrevistaInvalidaTest(){
+        Emprestimo emprestimo = new Emprestimo();
+        emprestimo.setIdEmprestimo(1L);
+        List livros = new ArrayList<Livro>();
+        livros.add(new LivroObjetosTest().getLivroTeste());
+        emprestimo.setIdUser(new UsuarioObjetosTest().getUsuarioTeste().getId());
+        emprestimo.setLivros(livros);
+        emprestimo.setDataPrevistaDevolucaoEmprestimo(LocalDateTime.now());
+        emprestimo.setDataInicioEmprestimo(emprestimo.getDataPrevistaDevolucaoEmprestimo().plusDays(1));
+        emprestimo.setDataDevolucaoEmprestimo(emprestimo.getDataInicioEmprestimo().plusDays(6));
+        return emprestimo;
+    }
+
+    public Emprestimo getEmprestimoComLivroReservadoTest(){
+        Emprestimo emprestimo = new Emprestimo();
+        emprestimo.setIdEmprestimo(1L);
+        List livros = new ArrayList<Livro>();
+        livros.add(new LivroObjetosTest().getLivroTeste());
+        livros.add(new LivroObjetosTest().getLivroReservadoTeste());
+        emprestimo.setIdUser(new UsuarioObjetosTest().getUsuarioTeste().getId());
+        emprestimo.setLivros(livros);
+        emprestimo.setDataInicioEmprestimo(LocalDateTime.now());
+        emprestimo.setDataPrevistaDevolucaoEmprestimo(emprestimo.getDataInicioEmprestimo().plusDays(5));
+        emprestimo.setDataDevolucaoEmprestimo(emprestimo.getDataInicioEmprestimo().plusDays(6));
+        return emprestimo;
+    }
+
+    public Emprestimo getEmprestimoComLivroEmprestadoTest(){
+        Emprestimo emprestimo = new Emprestimo();
+        emprestimo.setIdEmprestimo(1L);
+        List livros = new ArrayList<Livro>();
+        livros.add(new LivroObjetosTest().getLivroTeste());
+        livros.add(new LivroObjetosTest().getLivroEmprestadoTeste());
+        emprestimo.setIdUser(new UsuarioObjetosTest().getUsuarioTeste().getId());
+        emprestimo.setLivros(livros);
+        emprestimo.setDataInicioEmprestimo(LocalDateTime.now());
+        emprestimo.setDataPrevistaDevolucaoEmprestimo(emprestimo.getDataInicioEmprestimo().plusDays(5));
+        emprestimo.setDataDevolucaoEmprestimo(emprestimo.getDataInicioEmprestimo().plusDays(6));
+        return emprestimo;
+    }
+
 }

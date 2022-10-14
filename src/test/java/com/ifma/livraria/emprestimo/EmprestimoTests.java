@@ -32,11 +32,41 @@ class EmprestimoTests {
 
     @Test
     public void realizarEmprestimoLivroNaoReservado(){
-        Emprestimo realizado = null;
-        Emprestimo emprestimo = new EmprestimoObjetosTest().getEmprestimoTest();
-        when(repository.salvarNovoEmprestimo(emprestimo)).thenReturn(realizado);
-        Emprestimo realizadoService = service.salvarEmprestimo(emprestimo);
+        Emprestimo realizadoRepositorio = null;
+        when(repository.salvarNovoEmprestimo(new EmprestimoObjetosTest().getEmprestimoTest())).thenReturn(realizadoRepositorio);
+        Emprestimo realizadoService = service.salvarEmprestimo(new EmprestimoObjetosTest().getEmprestimoTest());
 
-        assertEquals(realizado, realizadoService);
+        assertEquals(realizadoRepositorio, realizadoService);
     }
+
+    @Test
+    public void realizarEmprestimoLivroReservado(){
+
+    }
+
+    @Test
+    public void verificarDataPrevistaEmprestimo(){
+
+    }
+
+    @Test
+    public void devolucaoAntesDaDataPrevista(){
+
+    }
+
+    @Test
+    public void devolucaoNaDataPrevista(){
+
+    }
+
+    @Test
+    public void devolucaoUmDiaAposDataPrevista(){
+
+    }
+
+    @Test
+    public void devolucaoTrintaDiaAposDataPrevista(){
+
+    }
+
 }
