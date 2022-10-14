@@ -14,6 +14,6 @@ public class EmprestimoService {
 
     @Transactional
     public Emprestimo salvarEmprestimo(Emprestimo emprestimo){
-        return  emprestimoRepository.salvar(emprestimo) ;
+        return  emprestimoRepository.salvarNovoEmprestimo(emprestimo) ;
     }
 }
