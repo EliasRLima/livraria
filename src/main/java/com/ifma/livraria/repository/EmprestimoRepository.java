@@ -4,5 +4,5 @@ import com.ifma.livraria.entity.Emprestimo;
 
 public interface EmprestimoRepository{
 
-    public Emprestimo salvar(Emprestimo emprestimo);
+    public Emprestimo salvarNovoEmprestimo(Emprestimo emprestimo);
 }

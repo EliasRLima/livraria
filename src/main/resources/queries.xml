@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <entry key="Emprestimo.buscarPorId">
+    <![CDATA[ 
+        SELECT *
+         FROM TB_EMPRESTIMO
+         WHERE id_emprestimo = ?
+    ]]>
+    </entry>
+    <entry key="Emprestimo.buscarLivros">
+        <![CDATA[
+        SELECT *
+         FROM TB_EMPRESTIMO_LIVRO
+         WHERE id_emprestimo = ?
+    ]]>
+    </entry>
+    <entry key="Emprestimo.salvar">
+        <![CDATA[
+        INSERT INTO TB_EMPRESTIMO
+        (id_emprestimo,
+	     id_usuario,
+	     data_inicio,
+	     data_prevista,
+	     data_devolucao)
+        VALUES
+        (?,
+         ?,
+         ?,
+         ?,
+         ?)
+    ]]>
+    </entry>
+    <entry key="Emprestimo.salvarLivros">
+        <![CDATA[
+        INSERT INTO TB_EMPRESTIMO_LIVRO
+        (id_emprestimo,
+	     id_livro)
+        VALUES
+        (?,
+         ?)
+    ]]>
+    </entry>
+</properties>

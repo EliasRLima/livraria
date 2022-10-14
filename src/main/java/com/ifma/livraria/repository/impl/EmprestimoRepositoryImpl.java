@@ -5,9 +5,14 @@ import com.ifma.livraria.repository.AbstractRepository;
 import com.ifma.livraria.repository.EmprestimoRepository;
 import com.ifma.livraria.service.QueryService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 
 @Slf4j
 @Repository
@@ -18,7 +23,45 @@ public class EmprestimoRepositoryImpl extends AbstractRepository implements Empr
     }
 
     @Override
-    public Emprestimo salvar(Emprestimo emprestimo) {
-        return new Emprestimo();
+    public Emprestimo salvarNovoEmprestimo(Emprestimo emprestimo) {
+        int[] quantidadeSalva = this.getJdbcTemplate().batchUpdate(
+                this.getQueryService().get("Emprestimo.salvar"),
+                new BatchPreparedStatementSetter() {
+
+                    @Override
+                    public void setValues(PreparedStatement ps, int i) throws SQLException {
+                        ps.setLong(1, emprestimo.getIdEmprestimo());
+                        ps.setLong(2, emprestimo.getIdUser());
+                        ps.setTimestamp(3, Timestamp.valueOf(emprestimo.getDataInicioEmprestimo()));
+                        ps.setTimestamp(4, Timestamp.valueOf(emprestimo.getDataPrevistaDevolucaoEmprestimo()));
+                        ps.setTimestamp(5, Timestamp.valueOf(emprestimo.getDataDevolucaoEmprestimo()));
+
+                    }
+                    @Override
+                    public int getBatchSize() {
+                        return 1;
+                    }
+                });
+
+        if(quantidadeSalva.length > 0){
+            int[] quantidadeSalvaLivro = this.getJdbcTemplate().batchUpdate(
+                    this.getQueryService().get("Emprestimo.salvarLivros"),
+                    new BatchPreparedStatementSetter() {
+
+                        @Override
+                        public void setValues(PreparedStatement ps, int i) throws SQLException {
+                            ps.setLong(1, emprestimo.getIdEmprestimo());
+                            ps.setLong(2, emprestimo.getLivros().get(i).getId());
+                        }
+                        @Override
+                        public int getBatchSize() {
+                            return 1;
+                        }
+                    });
+
+            return quantidadeSalvaLivro.length == emprestimo.getLivros().size() ? emprestimo : null;
+        }
+        return quantidadeSalva.length > 0 ? emprestimo : null;
+
     }
 }

@@ -34,7 +34,7 @@ class EmprestimoTests {
     public void realizarEmprestimoLivroNaoReservado(){
         Emprestimo realizado = null;
         Emprestimo emprestimo = new EmprestimoObjetosTest().getEmprestimoTest();
-        when(repository.salvar(emprestimo)).thenReturn(realizado);
+        when(repository.salvarNovoEmprestimo(emprestimo)).thenReturn(realizado);
         Emprestimo realizadoService = service.salvarEmprestimo(emprestimo);
 
         assertEquals(realizado, realizadoService);
