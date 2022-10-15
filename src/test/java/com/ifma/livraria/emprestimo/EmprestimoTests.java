@@ -18,6 +18,7 @@ import java.util.HashMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 
@@ -54,7 +55,12 @@ class EmprestimoTests {
 
     @Test
     public void verificarDataPrevistaEmprestimo(){
+        assertTrue(service.dataPrevistaEmprestimoEstaValida(new EmprestimoObjetosTest().getEmprestimoTest()));
 
+        Throwable thrown = catchThrowable(() -> service.salvarEmprestimo(new EmprestimoObjetosTest().getEmprestimoDataPrevistaInvalidaTest()));
+
+        assertThat(thrown).isInstanceOf(LivrariaException.class)
+                .hasMessageContaining("data prevista deve ser posterior a data de emprestimo");
     }
 
     @Test

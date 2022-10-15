@@ -40,7 +40,7 @@ public class EmprestimoService {
         return  emprestimoRepository.salvarNovoEmprestimo(emprestimo) ;
     }
 
-    private boolean emprestimoValido(Emprestimo emprestimo){
+    public boolean emprestimoValido(Emprestimo emprestimo){
         List<Livro> livroIndisponivel = emprestimo.getLivros().stream().filter(x -> !livroService.livroEstaDisponivel(x.getId())).collect(Collectors.toList());
 
         return dataDevolucaoEmprestimoEstaValida(emprestimo)
@@ -50,7 +50,7 @@ public class EmprestimoService {
                 && limiteQuantidadeDeLivrosNaoUltrapassada(emprestimo);
     }
 
-    private boolean dataPrevistaEmprestimoEstaValida(Emprestimo emprestimo){
+    public boolean dataPrevistaEmprestimoEstaValida(Emprestimo emprestimo){
         if(!emprestimo.getDataPrevistaDevolucaoEmprestimo().isAfter(emprestimo.getDataInicioEmprestimo())){
             throw new LivrariaException(
                     MessageProperties.getMensagemPadrao("livro.data.prevista"));
@@ -58,7 +58,7 @@ public class EmprestimoService {
         return true;
     }
 
-    private boolean dataDevolucaoEmprestimoEstaValida(Emprestimo emprestimo){
+    public boolean dataDevolucaoEmprestimoEstaValida(Emprestimo emprestimo){
         if(!emprestimo.getDataDevolucaoEmprestimo().isAfter(emprestimo.getDataInicioEmprestimo()) && Objects.nonNull(emprestimo.getDataDevolucaoEmprestimo())){
             throw new LivrariaException(
                     MessageProperties.getMensagemPadrao("livro.data.devolucao"));
@@ -66,7 +66,7 @@ public class EmprestimoService {
         return true;
     }
 
-    private boolean limiteQuantidadeDeLivrosNaoUltrapassada(Emprestimo emprestimo){
+    public boolean limiteQuantidadeDeLivrosNaoUltrapassada(Emprestimo emprestimo){
         int limiteLivrosPorEmprestimo = 3;
         return emprestimo.getLivros().size() <= limiteLivrosPorEmprestimo;
     }
