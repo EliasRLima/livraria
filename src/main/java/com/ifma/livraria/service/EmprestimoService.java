@@ -106,6 +106,12 @@ public class EmprestimoService {
         }
     }
 
+    public double calculaValorEmprestimo(EmprestimoDTO emprestimoDTO){
+        Emprestimo emprestimo = emprestimoDTO.converterParaEmprestimo();
+        emprestimo.setDataDevolucaoEmprestimo(LocalDateTime.now(clock));
+        return calculaValorEmprestimo(emprestimo);
+    }
+
     public List<Emprestimo> consultarEmprestimosPorUsuario(Long id_usuario, List<Emprestimo> listaEmprestimos){
         return listaEmprestimos.stream().filter(x -> x.getIdUser().equals(id_usuario)).collect(Collectors.toList());
     }
