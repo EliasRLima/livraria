@@ -3,6 +3,7 @@ package com.ifma.livraria.service;
 import com.ifma.livraria.dto.EmprestimoDTO;
 import com.ifma.livraria.entity.Emprestimo;
 import com.ifma.livraria.entity.Livro;
+import com.ifma.livraria.entity.Usuario;
 import com.ifma.livraria.exceptions.LivrariaException;
 import com.ifma.livraria.repository.impl.EmprestimoRepositoryImpl;
 import com.ifma.livraria.utils.MessageProperties;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -102,6 +104,11 @@ public class EmprestimoService {
         }else{
             return valorFixo * emprestimo.getLivros().size();
         }
+    }
+
+    //metodo feito apenas para atender ao doc da atividade
+    public List<Emprestimo> consultarEmprestimosPorUsuario(Long id_usuario, List<Emprestimo> listaEmprestimos){
+        return listaEmprestimos.stream().filter(x -> x.getIdUser().equals(id_usuario)).collect(Collectors.toList());
     }
 
 }
