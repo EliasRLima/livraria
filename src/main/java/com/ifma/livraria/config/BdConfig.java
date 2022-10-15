@@ -16,7 +16,7 @@ public class BdConfig {
         BasicDataSource dataSourceConfig = new BasicDataSource();
         dataSourceConfig.setDriverClassName("org.postgresql.Driver");
 
-        dataSourceConfig.setUrl("jdbc:postgresql://127.0.0.1:5432/databasename");
+        dataSourceConfig.setUrl("jdbc:postgresql://127.0.0.1:5432/livrariabd");
         dataSourceConfig.setUsername("postgres");
         dataSourceConfig.setValidationQuery("SELECT 1");
         dataSourceConfig.setPassword("erl");

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -23,6 +24,10 @@ public class EmprestimoService {
 
     @Autowired
     private EmprestimoRepositoryImpl emprestimoRepository;
+
+    @Autowired
+    private Clock clock;
+
     private LivroService livroService;
 
     private UsuarioService usuarioService;
@@ -44,7 +49,7 @@ public class EmprestimoService {
 
     @Transactional
     public double realizarDevolucao(Emprestimo emprestimo){
-        emprestimo.setDataDevolucaoEmprestimo(LocalDateTime.now());
+        emprestimo.setDataDevolucaoEmprestimo(LocalDateTime.now(clock));
         boolean devolver = emprestimoRepository.devolucaoDeEmprestimo(emprestimo);
         return devolver ? calculaValorEmprestimo(emprestimo) : 0;
     }
