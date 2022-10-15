@@ -93,7 +93,7 @@ public class EmprestimoService {
         return true;
     }
 
-    private double calculaValorEmprestimo(Emprestimo emprestimo){
+   public double calculaValorEmprestimo(Emprestimo emprestimo){
         double valorFixo = 5;
         double valorMultaDiaria = 0.4;
         double limitePorcentagemMulta = 0.6;

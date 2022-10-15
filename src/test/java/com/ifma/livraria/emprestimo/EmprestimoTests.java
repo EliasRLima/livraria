@@ -16,7 +16,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,7 +41,7 @@ class EmprestimoTests {
     private Clock localClock;
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
@@ -129,10 +128,22 @@ class EmprestimoTests {
 
     @Test
     public void verificarFiltrarListaEmprestimoPorUser(){
-        List<Emprestimo> listaDeEmprestimo = new EmprestimoObjetosTest().getListEmprestimoMultiUserTest(1L, 2L).stream().map(x -> x.converterParaEmprestimo()).collect(Collectors.toList());
+        List<Emprestimo> listaDeEmprestimo = new EmprestimoObjetosTest().getListEmprestimoMultiUserTest(1L, 2L).stream().map(EmprestimoDTO::converterParaEmprestimo).collect(Collectors.toList());
         List<Emprestimo> listaComFiltroAplicado = service.consultarEmprestimosPorUsuario(1L, listaDeEmprestimo);
 
         assertTrue(listaDeEmprestimo.size() > listaComFiltroAplicado.size());
+    }
+
+    @Test
+    public void verificarCalculoDeValorEmprestimo(){
+        double valor = service.calculaValorEmprestimo( new EmprestimoObjetosTest().getEmprestimoTest());
+        double valorManual = new EmprestimoObjetosTest().getEmprestimoTest().getLivros().size() * 5;
+
+        Emprestimo emprestimoAtrasado = new EmprestimoObjetosTest().getEmprestimoAtrasadoTest();
+        double valorComMultaAtraso = service.calculaValorEmprestimo(emprestimoAtrasado);
+        double valorManualComMulta = emprestimoAtrasado.getLivros().size() * 5 + emprestimoAtrasado.getDataDevolucaoEmprestimo().compareTo(emprestimoAtrasado.getDataPrevistaDevolucaoEmprestimo()) * 0.4;
+
+        assertEquals(valor==valorManual, valorComMultaAtraso==valorManualComMulta);
     }
 
 }

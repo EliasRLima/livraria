@@ -29,7 +29,19 @@ public class EmprestimoObjetosTest {
         emprestimo.setLivros(livros);
         emprestimo.setDataInicioEmprestimo(LocalDateTime.now());
         emprestimo.setDataPrevistaDevolucaoEmprestimo(emprestimo.getDataInicioEmprestimo().plusDays(7));
-        emprestimo.setDataDevolucaoEmprestimo(null);
+        emprestimo.setDataDevolucaoEmprestimo(emprestimo.getDataInicioEmprestimo().plusDays(5));
+        return emprestimo;
+    }
+
+    public Emprestimo getEmprestimoAtrasadoTest(){
+        Emprestimo emprestimo = new Emprestimo();
+        List<Livro> livros = new ArrayList<>();
+        livros.add(new LivroObjetosTest().getLivroTeste());
+        emprestimo.setIdUser(new UsuarioObjetosTest().getUsuarioTeste().getId());
+        emprestimo.setLivros(livros);
+        emprestimo.setDataInicioEmprestimo(LocalDateTime.now());
+        emprestimo.setDataPrevistaDevolucaoEmprestimo(emprestimo.getDataInicioEmprestimo().plusDays(7));
+        emprestimo.setDataDevolucaoEmprestimo(emprestimo.getDataInicioEmprestimo().plusDays(8));
         return emprestimo;
     }
 
