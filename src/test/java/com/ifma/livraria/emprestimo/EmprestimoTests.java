@@ -1,6 +1,7 @@
 package com.ifma.livraria.emprestimo;
 
 import com.ifma.livraria.entity.Emprestimo;
+import com.ifma.livraria.exceptions.LivrariaException;
 import com.ifma.livraria.repository.impl.EmprestimoRepositoryImpl;
 import com.ifma.livraria.service.EmprestimoService;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +13,10 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.HashMap;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -41,7 +46,10 @@ class EmprestimoTests {
 
     @Test
     public void realizarEmprestimoLivroReservado(){
+        Throwable thrown = catchThrowable(() -> service.salvarEmprestimo(new EmprestimoObjetosTest().getEmprestimoComLivroReservadoTest()));
 
+        assertThat(thrown).isInstanceOf(LivrariaException.class)
+                .hasMessageContaining("O emprestimo nao obdece todas as regras.");
     }
 
     @Test

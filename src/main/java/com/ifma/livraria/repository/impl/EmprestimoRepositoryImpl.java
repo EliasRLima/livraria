@@ -4,6 +4,7 @@ import com.ifma.livraria.entity.Emprestimo;
 import com.ifma.livraria.repository.AbstractRepository;
 import com.ifma.livraria.repository.EmprestimoRepository;
 import com.ifma.livraria.service.QueryService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,6 +22,7 @@ public class EmprestimoRepositoryImpl extends AbstractRepository implements Empr
     public EmprestimoRepositoryImpl(JdbcTemplate jdbcTemplate, QueryService queryService, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         super(jdbcTemplate, queryService, namedParameterJdbcTemplate);
     }
+
 
     @Override
     public Emprestimo salvarNovoEmprestimo(Emprestimo emprestimo) {

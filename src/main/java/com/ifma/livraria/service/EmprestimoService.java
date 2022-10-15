@@ -5,22 +5,31 @@ import com.ifma.livraria.entity.Livro;
 import com.ifma.livraria.exceptions.LivrariaException;
 import com.ifma.livraria.repository.impl.EmprestimoRepositoryImpl;
 import com.ifma.livraria.utils.MessageProperties;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
+
 public class EmprestimoService {
 
     @Autowired
     private EmprestimoRepositoryImpl emprestimoRepository;
-    @Autowired
     private LivroService livroService;
-    @Autowired
+
     private UsuarioService usuarioService;
+
+    public EmprestimoService() {
+        this.livroService = new LivroService();
+        this.usuarioService = new UsuarioService();
+    }
 
     @Transactional
     public Emprestimo salvarEmprestimo(Emprestimo emprestimo){
@@ -50,7 +59,7 @@ public class EmprestimoService {
     }
 
     private boolean dataDevolucaoEmprestimoEstaValida(Emprestimo emprestimo){
-        if(emprestimo.getDataDevolucaoEmprestimo().isAfter(emprestimo.getDataInicioEmprestimo())){
+        if(!emprestimo.getDataDevolucaoEmprestimo().isAfter(emprestimo.getDataInicioEmprestimo()) && Objects.nonNull(emprestimo.getDataDevolucaoEmprestimo())){
             throw new LivrariaException(
                     MessageProperties.getMensagemPadrao("livro.data.devolucao"));
         }
