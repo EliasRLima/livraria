@@ -106,7 +106,6 @@ public class EmprestimoService {
         }
     }
 
-    //metodo feito apenas para atender ao doc da atividade
     public List<Emprestimo> consultarEmprestimosPorUsuario(Long id_usuario, List<Emprestimo> listaEmprestimos){
         return listaEmprestimos.stream().filter(x -> x.getIdUser().equals(id_usuario)).collect(Collectors.toList());
     }

@@ -1,5 +1,6 @@
 package com.ifma.livraria.emprestimo;
 
+import com.ifma.livraria.dto.EmprestimoDTO;
 import com.ifma.livraria.entity.Emprestimo;
 import com.ifma.livraria.exceptions.LivrariaException;
 import com.ifma.livraria.repository.impl.EmprestimoRepositoryImpl;
@@ -15,6 +16,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -121,6 +125,14 @@ class EmprestimoTests {
         boolean multaAplicadaCorretamente = valorEmprestimo == (new EmprestimoObjetosTest().getEmprestimoTest().getLivros().size() * 5) + 30*0.4;
 
         assertEquals(multaAplicadaCorretamente, retornoRepository);
+    }
+
+    @Test
+    public void verificarFiltrarListaEmprestimoPorUser(){
+        List<Emprestimo> listaDeEmprestimo = new EmprestimoObjetosTest().getListEmprestimoMultiUserTest(1L, 2L).stream().map(x -> x.converterParaEmprestimo()).collect(Collectors.toList());
+        List<Emprestimo> listaComFiltroAplicado = service.consultarEmprestimosPorUsuario(1L, listaDeEmprestimo);
+
+        assertTrue(listaDeEmprestimo.size() > listaComFiltroAplicado.size());
     }
 
 }
