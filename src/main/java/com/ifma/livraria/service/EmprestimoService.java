@@ -48,7 +48,8 @@ public class EmprestimoService {
     }
 
     @Transactional
-    public double realizarDevolucao(Emprestimo emprestimo){
+    public double realizarDevolucao(EmprestimoDTO emprestimoDTO){
+        Emprestimo emprestimo = emprestimoDTO.converterParaEmprestimo();
         emprestimo.setDataDevolucaoEmprestimo(LocalDateTime.now(clock));
         boolean devolver = emprestimoRepository.devolucaoDeEmprestimo(emprestimo);
         return devolver ? calculaValorEmprestimo(emprestimo) : 0;
@@ -61,7 +62,7 @@ public class EmprestimoService {
                 && dataPrevistaEmprestimoEstaValida(emprestimo)
                 && usuarioService.usuarioLiberadoParaEmprestimo(emprestimo.getIdUser())
                 && livroIndisponivel.isEmpty()
-                && limiteQuantidadeDeLivrosNaoUltrapassada(emprestimo);
+                && quantidadeDeLivrosEstaValida(emprestimo);
     }
 
     public boolean dataPrevistaEmprestimoEstaValida(Emprestimo emprestimo){
@@ -81,13 +82,13 @@ public class EmprestimoService {
         return true;
     }
 
-    public boolean limiteQuantidadeDeLivrosNaoUltrapassada(Emprestimo emprestimo){
+    public boolean quantidadeDeLivrosEstaValida(Emprestimo emprestimo){
         int limiteLivrosPorEmprestimo = 3;
-        return emprestimo.getLivros().size() <= limiteLivrosPorEmprestimo;
-    }
-
-    public List<Emprestimo> consultaEmprestimosPorUsuario(){
-        return null;
+        if(emprestimo.getLivros().size() > limiteLivrosPorEmprestimo || emprestimo.getLivros().size() <= 0){
+            throw new LivrariaException(
+                    MessageProperties.getMensagemPadrao("emprestimo.quantidade.livro.invalido"));
+        }
+        return true;
     }
 
     private double calculaValorEmprestimo(Emprestimo emprestimo){

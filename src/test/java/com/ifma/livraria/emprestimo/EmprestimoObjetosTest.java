@@ -18,7 +18,6 @@ public class EmprestimoObjetosTest {
         livros.add(new LivroObjetosTest().getLivroTeste());
         emprestimo.setIdUser(new UsuarioObjetosTest().getUsuarioTeste().getId());
         emprestimo.setLivros(livros);
-        emprestimo.setDataPrevistaDevolucaoEmprestimo(LocalDateTime.now().plusDays(5));
         return emprestimo;
     }
 
@@ -29,7 +28,7 @@ public class EmprestimoObjetosTest {
         emprestimo.setIdUser(new UsuarioObjetosTest().getUsuarioTeste().getId());
         emprestimo.setLivros(livros);
         emprestimo.setDataInicioEmprestimo(LocalDateTime.now());
-        emprestimo.setDataPrevistaDevolucaoEmprestimo(emprestimo.getDataInicioEmprestimo().plusDays(5));
+        emprestimo.setDataPrevistaDevolucaoEmprestimo(emprestimo.getDataInicioEmprestimo().plusDays(7));
         emprestimo.setDataDevolucaoEmprestimo(null);
         return emprestimo;
     }
@@ -41,7 +40,6 @@ public class EmprestimoObjetosTest {
         livros.add(new LivroObjetosTest().getLivroTeste());
         emprestimo.setIdUser(new UsuarioObjetosTest().getUsuarioTeste().getId());
         emprestimo.setLivros(livros);
-        emprestimo.setDataPrevistaDevolucaoEmprestimo(LocalDateTime.now().plusDays(5));
         return emprestimo;
     }
 
@@ -52,7 +50,6 @@ public class EmprestimoObjetosTest {
         livros.add(new LivroObjetosTest().getLivroTeste());
         emprestimo.setIdUser(new UsuarioObjetosTest().getUsuarioTeste().getId());
         emprestimo.setLivros(livros);
-        emprestimo.setDataPrevistaDevolucaoEmprestimo(LocalDateTime.now().minusDays(5));
         return emprestimo;
     }
 
@@ -65,7 +62,7 @@ public class EmprestimoObjetosTest {
         emprestimo.setIdUser(new UsuarioObjetosTest().getUsuarioTeste().getId());
         emprestimo.setLivros(livros);
         emprestimo.setDataPrevistaDevolucaoEmprestimo(LocalDateTime.now());
-        emprestimo.setDataInicioEmprestimo(emprestimo.getDataPrevistaDevolucaoEmprestimo().plusDays(5));
+        emprestimo.setDataInicioEmprestimo(emprestimo.getDataPrevistaDevolucaoEmprestimo().plusDays(7));
         emprestimo.setDataDevolucaoEmprestimo(null);
         return emprestimo;
     }
@@ -78,7 +75,6 @@ public class EmprestimoObjetosTest {
         livros.add(new LivroObjetosTest().getLivroReservadoTeste());
         emprestimo.setIdUser(new UsuarioObjetosTest().getUsuarioTeste().getId());
         emprestimo.setLivros(livros);
-        emprestimo.setDataPrevistaDevolucaoEmprestimo(LocalDateTime.now().plusDays(5));
         return emprestimo;
     }
 
@@ -91,7 +87,6 @@ public class EmprestimoObjetosTest {
         emprestimo.setIdUser(new UsuarioObjetosTest().getUsuarioTeste().getId());
         emprestimo.setLivros(livros);
         emprestimo.setDataInicioEmprestimo(LocalDateTime.now());
-        emprestimo.setDataPrevistaDevolucaoEmprestimo(emprestimo.getDataInicioEmprestimo().plusDays(5));
         emprestimo.setDataDevolucaoEmprestimo(null);
         return emprestimo;
     }
@@ -99,15 +94,30 @@ public class EmprestimoObjetosTest {
     public Emprestimo getEmprestimoComLivroEmprestadoTest(){
         Emprestimo emprestimo = new Emprestimo();
         emprestimo.setIdEmprestimo(1L);
-        List livros = new ArrayList<Livro>();
+        List<Livro> livros = new ArrayList<>();
         livros.add(new LivroObjetosTest().getLivroTeste());
         livros.add(new LivroObjetosTest().getLivroEmprestadoTeste());
         emprestimo.setIdUser(new UsuarioObjetosTest().getUsuarioTeste().getId());
         emprestimo.setLivros(livros);
         emprestimo.setDataInicioEmprestimo(LocalDateTime.now());
-        emprestimo.setDataPrevistaDevolucaoEmprestimo(emprestimo.getDataInicioEmprestimo().plusDays(5));
         emprestimo.setDataDevolucaoEmprestimo(null);
         return emprestimo;
+    }
+
+    public List<EmprestimoDTO> getListEmprestimoPorUserTest(Long idUsuario){
+        List<EmprestimoDTO> emprestimos = new ArrayList<>();
+        int id = 1;
+        for(Livro livro : new LivroObjetosTest().getListaLivroDisponiveisTeste()){
+            EmprestimoDTO emprestimo = new EmprestimoDTO();
+            emprestimo.setIdEmprestimo(Long.parseLong(""+id++));
+            emprestimo.setIdUser(idUsuario);
+            List<Livro> livros = new ArrayList<>();
+            livros.add(livro);
+            emprestimo.setLivros(livros);
+            emprestimos.add(emprestimo);
+        }
+
+        return emprestimos;
     }
 
 }

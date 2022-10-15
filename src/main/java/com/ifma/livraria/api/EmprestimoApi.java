@@ -15,8 +15,13 @@ public class EmprestimoApi {
     @Autowired
     private EmprestimoService emprestimoService;
 
-    @PostMapping
+    @PostMapping("/novo")
     public boolean enviarEmprestimo(@RequestBody EmprestimoDTO emprestimoDTO){
         return emprestimoService.salvarEmprestimo(emprestimoDTO) != null;
+    }
+
+    @PostMapping("/devolver")
+    public double realizaDevolucao(@RequestBody EmprestimoDTO emprestimoDTO){
+        return emprestimoService.realizarDevolucao(emprestimoDTO);
     }
 }
