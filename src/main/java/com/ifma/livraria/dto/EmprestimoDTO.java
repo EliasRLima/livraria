@@ -19,9 +19,8 @@ public class EmprestimoDTO {
     private Long idEmprestimo;
     private Long idUser;
     private List<Livro> livros;
-    private LocalDateTime dataPrevistaDevolucaoEmprestimo;
 
     public Emprestimo converterParaEmprestimo(){
-        return new Emprestimo(this.idEmprestimo, this.idUser, this.livros, LocalDateTime.now(), this.dataPrevistaDevolucaoEmprestimo, null);
+        return new Emprestimo(this.idEmprestimo, this.idUser, this.livros, LocalDateTime.now(), LocalDateTime.now().plusDays(7), null);
     }
 }

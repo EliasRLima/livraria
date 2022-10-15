@@ -62,7 +62,7 @@ class EmprestimoTests {
     @Test
     public void verificarDataPrevistaEmprestimo(){
         assertTrue(service.dataPrevistaEmprestimoEstaValida(new EmprestimoObjetosTest().getEmprestimoTest()));
-        Throwable thrown = catchThrowable(() -> service.salvarEmprestimo(new EmprestimoObjetosTest().getEmprestimoDtoDataPrevistaInvalidaTest()));
+        Throwable thrown = catchThrowable(() -> service.dataPrevistaEmprestimoEstaValida(new EmprestimoObjetosTest().getEmprestimoDataPrevistaInvalidaTest()));
 
         assertThat(thrown).isInstanceOf(LivrariaException.class)
                 .hasMessageContaining("data prevista deve ser posterior a data de emprestimo");
@@ -77,47 +77,47 @@ class EmprestimoTests {
 
         boolean retornoRepository = false;
         when(repository.devolucaoDeEmprestimo(new EmprestimoObjetosTest().getEmprestimoTest())).thenReturn(retornoRepository);
-        boolean retornoService = service.realizarDevolucao(new EmprestimoObjetosTest().getEmprestimoTest()) > 0;
+        boolean retornoService = service.realizarDevolucao(new EmprestimoObjetosTest().getEmprestimoDtoTest()) > 0;
 
         assertEquals(retornoService, retornoRepository);
     }
 
     @Test
     public void devolucaoNaDataPrevista(){
-        localClock = Clock.fixed(LOCAL_DATE.plusDays(5).atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        localClock = Clock.fixed(LOCAL_DATE.plusDays(7).atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
         doReturn(localClock.instant()).when(clock).instant();
         doReturn(localClock.getZone()).when(clock).getZone();
 
         boolean retornoRepository = false;
         when(repository.devolucaoDeEmprestimo(new EmprestimoObjetosTest().getEmprestimoTest())).thenReturn(retornoRepository);
-        boolean retornoService = service.realizarDevolucao(new EmprestimoObjetosTest().getEmprestimoTest()) > 0;
+        boolean retornoService = service.realizarDevolucao(new EmprestimoObjetosTest().getEmprestimoDtoTest()) > 0;
 
         assertEquals(retornoService, retornoRepository);
     }
 
     @Test
     public void devolucaoUmDiaAposDataPrevista(){
-        localClock = Clock.fixed(LOCAL_DATE.plusDays(6).atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        localClock = Clock.fixed(LOCAL_DATE.plusDays(8).atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
         doReturn(localClock.instant()).when(clock).instant();
         doReturn(localClock.getZone()).when(clock).getZone();
 
         boolean retornoRepository = false;
         when(repository.devolucaoDeEmprestimo(new EmprestimoObjetosTest().getEmprestimoTest())).thenReturn(retornoRepository);
-        double valorEmprestimo = service.realizarDevolucao(new EmprestimoObjetosTest().getEmprestimoTest());
-        boolean multaAplicadaCorretamente = valorEmprestimo == (new EmprestimoObjetosTest().getEmprestimoTest().getLivros().size() * 5) + 0.4;
+        double valorEmprestimo = service.realizarDevolucao(new EmprestimoObjetosTest().getEmprestimoDtoTest());
+        boolean multaAplicadaCorretamente = valorEmprestimo == (new EmprestimoObjetosTest().getEmprestimoTest().getLivros().size() * 7) + 0.4;
 
         assertEquals(multaAplicadaCorretamente, retornoRepository);
     }
 
     @Test
     public void devolucaoTrintaDiaAposDataPrevista(){
-        localClock = Clock.fixed(LOCAL_DATE.plusDays(35).atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        localClock = Clock.fixed(LOCAL_DATE.plusDays(37).atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
         doReturn(localClock.instant()).when(clock).instant();
         doReturn(localClock.getZone()).when(clock).getZone();
 
         boolean retornoRepository = false;
         when(repository.devolucaoDeEmprestimo(new EmprestimoObjetosTest().getEmprestimoTest())).thenReturn(retornoRepository);
-        double valorEmprestimo = service.realizarDevolucao(new EmprestimoObjetosTest().getEmprestimoTest());
+        double valorEmprestimo = service.realizarDevolucao(new EmprestimoObjetosTest().getEmprestimoDtoTest());
         boolean multaAplicadaCorretamente = valorEmprestimo == (new EmprestimoObjetosTest().getEmprestimoTest().getLivros().size() * 5) + 30*0.4;
 
         assertEquals(multaAplicadaCorretamente, retornoRepository);
