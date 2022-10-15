@@ -45,7 +45,8 @@ public class EmprestimoService {
     @Transactional
     public double realizarDevolucao(Emprestimo emprestimo){
         emprestimo.setDataDevolucaoEmprestimo(LocalDateTime.now());
-        return calculaValorEmprestimo(emprestimo);
+        boolean devolver = emprestimoRepository.devolucaoDeEmprestimo(emprestimo);
+        return devolver ? calculaValorEmprestimo(emprestimo) : 0;
     }
 
     public boolean emprestimoValido(Emprestimo emprestimo){

@@ -10,10 +10,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.HashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -56,7 +53,6 @@ class EmprestimoTests {
     @Test
     public void verificarDataPrevistaEmprestimo(){
         assertTrue(service.dataPrevistaEmprestimoEstaValida(new EmprestimoObjetosTest().getEmprestimoTest()));
-
         Throwable thrown = catchThrowable(() -> service.salvarEmprestimo(new EmprestimoObjetosTest().getEmprestimoDtoDataPrevistaInvalidaTest()));
 
         assertThat(thrown).isInstanceOf(LivrariaException.class)
