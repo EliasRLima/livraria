@@ -71,6 +71,15 @@ class EmprestimoTests {
                 .hasMessageContaining("data prevista deve ser posterior a data de emprestimo");
     }
 
+    @Test
+    public void verificarDataDevolucaoEmprestimo(){
+        assertTrue(service.dataDevolucaoEmprestimoEstaValida(new EmprestimoObjetosTest().getEmprestimoTest()));
+        Throwable thrown = catchThrowable(() -> service.dataDevolucaoEmprestimoEstaValida(new EmprestimoObjetosTest().getEmprestimoDataDevolucaoInvalidaTest()));
+
+        assertThat(thrown).isInstanceOf(LivrariaException.class)
+                .hasMessageContaining("a data de devolucao deve ser posterior a data de emprestimo");
+    }
+
 
     @Test
     public void devolucaoAntesDaDataPrevista(){

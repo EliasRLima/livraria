@@ -58,6 +58,19 @@ public class EmprestimoObjetosTest {
         return emprestimo;
     }
 
+    public Emprestimo getEmprestimoDataDevolucaoInvalidaTest(){
+        Emprestimo emprestimo = new Emprestimo();
+        emprestimo.setIdEmprestimo(1L);
+        List<Livro> livros = new ArrayList<>();
+        livros.add(new LivroObjetosTest().getLivroTeste());
+        emprestimo.setIdUser(new UsuarioObjetosTest().getUsuarioTeste().getId());
+        emprestimo.setLivros(livros);
+        emprestimo.setDataInicioEmprestimo(LocalDateTime.now());
+        emprestimo.setDataPrevistaDevolucaoEmprestimo(LocalDateTime.now().plusDays(7));
+        emprestimo.setDataDevolucaoEmprestimo(LocalDateTime.now().minusDays(2));
+        return emprestimo;
+    }
+
     public EmprestimoDTO getEmprestimoDtoComLivroReservadoTest(){
         EmprestimoDTO emprestimo = new EmprestimoDTO();
         emprestimo.setIdEmprestimo(1L);
