@@ -4,8 +4,6 @@ import com.ifma.livraria.entity.Emprestimo;
 import com.ifma.livraria.exceptions.LivrariaException;
 import com.ifma.livraria.repository.impl.EmprestimoRepositoryImpl;
 import com.ifma.livraria.service.EmprestimoService;
-import mockit.Expectations;
-import mockit.Mocked;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +14,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.Clock;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 import static org.assertj.core.api.Assertions.assertThat;
