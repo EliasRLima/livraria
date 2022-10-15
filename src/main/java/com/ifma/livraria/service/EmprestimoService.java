@@ -1,5 +1,6 @@
 package com.ifma.livraria.service;
 
+import com.ifma.livraria.dto.EmprestimoDTO;
 import com.ifma.livraria.entity.Emprestimo;
 import com.ifma.livraria.entity.Livro;
 import com.ifma.livraria.exceptions.LivrariaException;
@@ -11,13 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-
 public class EmprestimoService {
 
     @Autowired
@@ -32,16 +33,23 @@ public class EmprestimoService {
     }
 
     @Transactional
-    public Emprestimo salvarEmprestimo(Emprestimo emprestimo){
-        if(emprestimoValido(emprestimo)){
+    public Emprestimo salvarEmprestimo(EmprestimoDTO emprestimoDTO){
+        Emprestimo emprestimo = emprestimoDTO.converterParaEmprestimo();
+        if(!emprestimoValido(emprestimo)){
             throw new LivrariaException(
                     MessageProperties.getMensagemPadrao("emprestimo.invalido"));
         }
         return  emprestimoRepository.salvarNovoEmprestimo(emprestimo) ;
     }
 
+    @Transactional
+    public double realizarDevolucao(Emprestimo emprestimo){
+        emprestimo.setDataDevolucaoEmprestimo(LocalDateTime.now());
+        return calculaValorEmprestimo(emprestimo);
+    }
+
     public boolean emprestimoValido(Emprestimo emprestimo){
-        List<Livro> livroIndisponivel = emprestimo.getLivros().stream().filter(x -> !livroService.livroEstaDisponivel(x.getId())).collect(Collectors.toList());
+        List<Livro> livroIndisponivel = emprestimo.getLivros().stream().filter(x -> !livroService.livroEstaDisponivel(x)).collect(Collectors.toList());
 
         return dataDevolucaoEmprestimoEstaValida(emprestimo)
                 && dataPrevistaEmprestimoEstaValida(emprestimo)
@@ -59,9 +67,10 @@ public class EmprestimoService {
     }
 
     public boolean dataDevolucaoEmprestimoEstaValida(Emprestimo emprestimo){
-        if(!emprestimo.getDataDevolucaoEmprestimo().isAfter(emprestimo.getDataInicioEmprestimo()) && Objects.nonNull(emprestimo.getDataDevolucaoEmprestimo())){
-            throw new LivrariaException(
-                    MessageProperties.getMensagemPadrao("livro.data.devolucao"));
+        if(Objects.nonNull(emprestimo.getDataDevolucaoEmprestimo())){
+            if(!emprestimo.getDataDevolucaoEmprestimo().isAfter(emprestimo.getDataInicioEmprestimo()))
+                throw new LivrariaException(
+                        MessageProperties.getMensagemPadrao("livro.data.devolucao"));
         }
         return true;
     }
@@ -75,7 +84,7 @@ public class EmprestimoService {
         return null;
     }
 
-    public double calculaValorEmprestimo(Emprestimo emprestimo){
+    private double calculaValorEmprestimo(Emprestimo emprestimo){
         double valorFixo = 5;
         double valorMultaDiaria = 0.4;
         double limitePorcentagemMulta = 0.6;

@@ -40,14 +40,14 @@ class EmprestimoTests {
     public void realizarEmprestimoLivroNaoReservado(){
         Emprestimo realizadoRepositorio = null;
         when(repository.salvarNovoEmprestimo(new EmprestimoObjetosTest().getEmprestimoTest())).thenReturn(realizadoRepositorio);
-        Emprestimo realizadoService = service.salvarEmprestimo(new EmprestimoObjetosTest().getEmprestimoTest());
+        Emprestimo realizadoService = service.salvarEmprestimo(new EmprestimoObjetosTest().getEmprestimoDtoTest());
 
         assertEquals(realizadoRepositorio, realizadoService);
     }
 
     @Test
     public void realizarEmprestimoLivroReservado(){
-        Throwable thrown = catchThrowable(() -> service.salvarEmprestimo(new EmprestimoObjetosTest().getEmprestimoComLivroReservadoTest()));
+        Throwable thrown = catchThrowable(() -> service.salvarEmprestimo(new EmprestimoObjetosTest().getEmprestimoDtoComLivroReservadoTest()));
 
         assertThat(thrown).isInstanceOf(LivrariaException.class)
                 .hasMessageContaining("O emprestimo nao obdece todas as regras.");
@@ -57,7 +57,7 @@ class EmprestimoTests {
     public void verificarDataPrevistaEmprestimo(){
         assertTrue(service.dataPrevistaEmprestimoEstaValida(new EmprestimoObjetosTest().getEmprestimoTest()));
 
-        Throwable thrown = catchThrowable(() -> service.salvarEmprestimo(new EmprestimoObjetosTest().getEmprestimoDataPrevistaInvalidaTest()));
+        Throwable thrown = catchThrowable(() -> service.salvarEmprestimo(new EmprestimoObjetosTest().getEmprestimoDtoDataPrevistaInvalidaTest()));
 
         assertThat(thrown).isInstanceOf(LivrariaException.class)
                 .hasMessageContaining("data prevista deve ser posterior a data de emprestimo");
