@@ -2,7 +2,9 @@ package com.ifma.livraria.emprestimo;
 
 import com.ifma.livraria.dto.EmprestimoDTO;
 import com.ifma.livraria.entity.Emprestimo;
+import com.ifma.livraria.entity.Livro;
 import com.ifma.livraria.exceptions.LivrariaException;
+import com.ifma.livraria.livro.LivroObjetosTest;
 import com.ifma.livraria.repository.impl.EmprestimoRepositoryImpl;
 import com.ifma.livraria.service.EmprestimoService;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -80,6 +83,22 @@ class EmprestimoTests {
                 .hasMessageContaining("a data de devolucao deve ser posterior a data de emprestimo");
     }
 
+    @Test
+    public void verificarQuantidadeDeLivrosEmprestimo(){
+        Emprestimo emprestimo = new EmprestimoObjetosTest().getEmprestimoTest();
+        assertTrue(service.quantidadeDeLivrosEstaValida(emprestimo));
+
+        List<Livro> listaLivrosAcimaDoPermitido = new LivroObjetosTest().getListaLivroDisponiveisTeste();
+        emprestimo.setLivros(listaLivrosAcimaDoPermitido);
+        Throwable thrown = catchThrowable(() -> service.quantidadeDeLivrosEstaValida(emprestimo));
+        assertThat(thrown).isInstanceOf(LivrariaException.class)
+                .hasMessageContaining("O emprestimo nao tem uma quantidade de livros valida.");
+
+        emprestimo.setLivros(new ArrayList<>());
+        thrown = catchThrowable(() -> service.quantidadeDeLivrosEstaValida(emprestimo));
+        assertThat(thrown).isInstanceOf(LivrariaException.class)
+                .hasMessageContaining("O emprestimo nao tem uma quantidade de livros valida.");
+    }
 
     @Test
     public void devolucaoAntesDaDataPrevista(){
